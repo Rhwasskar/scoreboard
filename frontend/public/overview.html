@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview Multiárea</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <script defer src="overview.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-black text-white min-h-screen flex flex-col p-4">
+
+  <header class="flex justify-between items-center mb-4">
+    <h1 class="text-2xl font-bold">Vista General - Torneo</h1>
+    <span class="text-gray-400 text-sm">Autoactualización en tiempo real</span>
+  </header>
+
+  <!-- Contenedor de tarjetas de áreas -->
+  <main id="areasContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 flex-1 overflow-y-auto">
+    <!-- Las tarjetas se insertan dinámicamente -->
+  </main>
+
+</body>
+</html>

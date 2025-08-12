@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Control de Área</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <script defer src="control.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col">
+
+  <header class="p-4 bg-gray-800 flex justify-between items-center">
+    <div>
+      <label>Área:</label>
+      <input id="areaInput" type="number" min="1" value="1" class="text-black w-16 text-center" />
+      <button id="joinArea" class="bg-green-600 px-3 py-1 rounded ml-2">Unirse</button>
+    </div>
+    <div>
+      <button id="newFightBtn" class="bg-blue-500 px-3 py-1 rounded">Nueva pelea</button>
+      <button id="endFightBtn" class="bg-red-500 px-3 py-1 rounded ml-2">Finalizar pelea</button>
+    </div>
+  </header>
+
+  <!-- Formulario nueva pelea -->
+  <div id="newFightForm" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-gray-800 p-6 rounded shadow-lg space-y-3 w-96">
+      <h2 class="text-lg font-bold">Nueva pelea</h2>
+      <input id="redName" type="text" placeholder="Esquina Roja (N. Apellido)" class="text-black w-full p-1" />
+      <input id="whiteName" type="text" placeholder="Esquina Blanca (N. Apellido)" class="text-black w-full p-1" />
+      <input id="categoryInput" type="text" placeholder="Categoría" class="text-black w-full p-1" />
+      <div class="flex justify-end space-x-2">
+        <button id="cancelFight" class="bg-gray-600 px-3 py-1 rounded">Cancelar</button>
+        <button id="confirmFight" class="bg-green-600 px-3 py-1 rounded">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cronómetro y estado -->
+  <main class="flex-1 grid grid-cols-2 gap-4 p-4">
+    <section class="col-span-2 text-center">
+      <div id="timer" class="text-6xl font-mono">02:00</div>
+      <div id="fightStatus" class="text-red-500 font-bold mt-2 hidden">TIEMPO MUERTO</div>
+      <div class="mt-2 space-x-2">
+        <button id="startBtn" class="bg-green-600 px-4 py-2 rounded">Start</button>
+        <button id="stopBtn" class="bg-yellow-500 px-4 py-2 rounded">T. Muerto</button>
+        <button id="resetBtn" class="bg-gray-600 px-4 py-2 rounded">Reset</button>
+      </div>
+    </section>
+
+    <!-- Esquina Roja -->
+    <section class="bg-red-700 p-4 rounded relative">
+      <div class="flex justify-between items-center">
+        <h2 id="redNameDisplay" class="text-xl font-bold">J. PEREZ</h2>
+        <button class="bg-red-900 rounded-full w-8 h-8 flex items-center justify-center menu-btn" data-corner="red">…</button>
+      </div>
+      <div class="text-5xl font-bold text-center mt-2" id="redScore">0</div>
+      <div class="text-sm mt-1">Faltas: <span id="redFouls">0</span> | Salidas: <span id="redOuts">0</span></div>
+      <div class="mt-2 flex justify-around">
+        <button class="bg-white text-red-700 font-bold px-2 py-1 rounded addPoint" data-corner="red" data-delta="1">+1</button>
+        <button class="bg-gray-200 text-black px-2 py-1 rounded addFoul" data-corner="red">Falta</button>
+        <button class="bg-gray-200 text-black px-2 py-1 rounded addOut" data-corner="red">Salida</button>
+      </div>
+    </section>
+
+    <!-- Esquina Blanca -->
+    <section class="bg-white text-black p-4 rounded relative">
+      <div class="flex justify-between items-center">
+        <h2 id="whiteNameDisplay" class="text-xl font-bold">M. LOPEZ</h2>
+        <button class="bg-gray-400 rounded-full w-8 h-8 flex items-center justify-center menu-btn" data-corner="white">…</button>
+      </div>
+      <div class="text-5xl font-bold text-center mt-2" id="whiteScore">0</div>
+      <div class="text-sm mt-1">Faltas: <span id="whiteFouls">0</span> | Salidas: <span id="whiteOuts">0</span></div>
+      <div class="mt-2 flex justify-around">
+        <button class="bg-black text-white font-bold px-2 py-1 rounded addPoint" data-corner="white" data-delta="1">+1</button>
+        <button class="bg-gray-200 text-black px-2 py-1 rounded addFoul" data-corner="white">Falta</button>
+        <button class="bg-gray-200 text-black px-2 py-1 rounded addOut" data-corner="white">Salida</button>
+      </div>
+    </section>
+
+    <!-- Historial -->
+    <section class="col-span-2 bg-gray-800 p-3 rounded overflow-y-auto max-h-64">
+      <h3 class="text-lg font-bold mb-2">Historial</h3>
+      <ul id="historyLog" class="space-y-1 text-sm"></ul>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "scoreboard",
+  "version": "1.0.0",
+  "main": "marcador/server.js",
+  "scripts": {
+    "start": "node marcador/server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^X.X.X",
+    "socket.io": "^X.X.X",
+    "xlsx": "^X.X.X"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

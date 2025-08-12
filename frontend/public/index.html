@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marcador - Monitor</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white flex flex-col items-center justify-start min-h-screen p-4">
+
+  <!-- Selector de Área -->
+  <div class="mb-4 flex items-center gap-2">
+    <label for="areaSelect">Área:</label>
+    <select id="areaSelect" class="text-black p-1 rounded">
+      <option value="1">Área 1</option>
+      <option value="2">Área 2</option>
+      <option value="3">Área 3</option>
+    </select>
+    <button id="connectBtn" class="bg-green-600 px-3 py-1 rounded hover:bg-green-700">
+      Conectar
+    </button>
+  </div>
+
+  <!-- Cronómetro -->
+  <div id="timer" class="text-6xl font-bold mb-6">02:00</div>
+
+  <!-- Marcador -->
+  <div class="grid grid-cols-2 gap-6 w-full max-w-4xl">
+
+    <!-- Esquina Roja -->
+    <div class="flex flex-col items-center bg-red-700 p-6 rounded-xl shadow-xl">
+      <div id="redName" class="text-2xl font-semibold mb-4">Competidor Rojo</div>
+      <div id="redScore" class="text-6xl font-bold mb-2">0</div>
+      <div class="text-lg">Faltas: <span id="redFouls">0</span></div>
+    </div>
+
+    <!-- Esquina Blanca -->
+    <div class="flex flex-col items-center bg-gray-200 text-black p-6 rounded-xl shadow-xl">
+      <div id="whiteName" class="text-2xl font-semibold mb-4">Competidor Blanco</div>
+      <div id="whiteScore" class="text-6xl font-bold mb-2">0</div>
+      <div class="text-lg">Faltas: <span id="whiteFouls">0</span></div>
+    </div>
+  </div>
+
+  <script>
+    const socket = io();
+    let currentArea = null;
+
+    const areaSelect = document.getElementById('areaSelect');
+    const connectBtn = document.getElementById('connectBtn');
+
+    const timer = document.getElementById('timer');
+    const redName = document.getElementById('redName');
+    const whiteName = document.getElementById('whiteName');
+    const redScore = document.getElementById('redScore');
+    const whiteScore = document.getElementById('whiteScore');
+    const redFouls = document.getElementById('redFouls');
+    const whiteFouls = document.getElementById('whiteFouls');
+
+    // Conexión a un área
+    connectBtn.addEventListener('click', () => {
+      const area = areaSelect.value;
+      if (currentArea) {
+        socket.emit('leaveArea', currentArea);
+      }
+      currentArea = area;
+      socket.emit('joinArea', area);
+    });
+
+    // Actualizar la UI con el estado recibido
+    socket.on('updateState', (state) => {
+      timer.textContent = formatTime(state.timer);
+      redName.textContent = state.red.name;
+      whiteName.textContent = state.white.name;
+      redScore.textContent = state.red.score;
+      whiteScore.textContent = state.white.score;
+      redFouls.textContent = state.red.fouls;
+      whiteFouls.textContent = state.white.fouls;
+    });
+
+    // Formatear cronómetro MM:SS
+    function formatTime(seconds) {
+      const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+      const s = String(seconds % 60).padStart(2, '0');
+      return `${m}:${s}`;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Control</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-600 min-h-screen p-4">
+
+  <!-- Selector de Área -->
+  <div class="flex items-center gap-2 mb-4">
+    <label for="areaSelect">Área:</label>
+    <select id="areaSelect" class="p-1 border rounded">
+      <option value="1">Área 1</option>
+      <option value="2">Área 2</option>
+      <option value="3">Área 3</option>
+    </select>
+    <button id="connectBtn" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
+      Conectar
+    </button>
+  </div>
+
+  <!-- Cronómetro -->
+  <div class="text-center mb-6">
+    <span id="timer" class="text-5xl font-bold mb-2 font-white">02:00
+    </span>
+    <!-- <span>  
+            <button class="bg-transparent border border-red-500 text-red-500 px-3 py-1 rounded hover:text-red">
+              T.Muerto</button></span> -->
+    <div class="space-x-2">
+      <button id="startBtn" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">Start</button>
+      <button id="stopBtn" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Stop</button>
+      <button id="resetBtn" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Reset</button>
+    </div>
+  </div>
+
+  <!-- Panel de Competidores -->
+  <div class="grid grid-cols-2 gap-6 max-w-4xl mx-auto mb-6">
+
+    <!-- Esquina Roja -->
+    <div class="bg-red-700 text-white p-4 rounded-xl shadow-lg flex flex-col items-center">
+      <input id="redName" class="text-black text-center mb-2 p-1 rounded" placeholder="Nombre Rojo" />
+      <div class="text-4xl font-bold mb-2" id="redScore">0</div>
+      <div>Faltas: <span id="redFouls">0</span></div>
+      <div>Salidas: <span id="redOuts">0</span></div>
+      <div class="mt-4 space-x-2">
+        <button class="bg-white text-red-700 px-2 py-1 rounded score-btn" data-corner="red" data-delta="1">+1</button>
+        <button class="bg-white text-red-700 px-2 py-1 rounded score-btn" data-corner="red" data-delta="-1">-1</button>
+        <button class="bg-black text-white px-2 py-1 rounded foul-btn" data-corner="red">Falta</button>
+        <button class="bg-white text-red-700 px-2 py-1 rounded out-btn" data-corner="red">Salida</button>
+        <div class="inline-block relative">
+          <button class="bg-red-800 text-white px-2 py-1 rounded">...</button>
+          <div class="absolute hidden bg-white text-black mt-1 rounded shadow-lg z-10 options-menu">
+            <button class="block px-4 py-2 w-full text-left lesion-btn" data-corner="red">Lesionado</button>
+            <button class="block px-4 py-2 w-full text-left dq-btn" data-corner="red">Descalificar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Esquina Blanca -->
+    <div class="bg-gray-200 text-black p-4 rounded-xl shadow-lg flex flex-col items-center">
+      <input id="whiteName" class="text-black text-center mb-2 p-1 rounded" placeholder="Nombre Blanco" />
+      <div class="text-4xl font-bold mb-2" id="whiteScore">0</div>
+      <div>Faltas: <span id="whiteFouls">0</span></div>
+      <div>Salidas: <span id="whiteOuts">0</span></div>
+      <div class="mt-4 space-x-2">
+        <button class="bg-black text-white px-2 py-1 rounded score-btn" data-corner="white" data-delta="1">+1</button>
+        <button class="bg-black text-white px-2 py-1 rounded score-btn" data-corner="white" data-delta="-1">-1</button>
+        <button class="bg-red-700 text-white px-2 py-1 rounded foul-btn" data-corner="white">Falta</button>
+        <button class="bg-black text-white px-2 py-1 rounded out-btn" data-corner="white">Salida</button>
+        <div class="inline-block relative">
+          <button class="bg-gray-700 text-white px-2 py-1 rounded">...</button>
+          <div class="absolute hidden bg-white text-black mt-1 rounded shadow-lg z-10 options-menu">
+            <button class="block px-4 py-2 w-full text-left lesion-btn" data-corner="white">Lesionado</button>
+            <button class="block px-4 py-2 w-full text-left dq-btn" data-corner="white">Descalificar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Historial -->
+<section class="bg-gray-900 p-4 rounded-lg text-white max-w-4xl mx-auto">
+  <!-- <h3 class="text-lg font-semibold mb-2">Historial de Eventos</h3> -->
+  <div id="historyScrollBox" class="max-h-64 overflow-y-auto rounded border border-gray-700">
+    <table class="w-full text-sm table-auto">
+      <tbody id="historyTableBody" class="divide-y divide-gray-700"></tbody>
+    </table>
+  </div>
+</section>
+
+
+<script src="control.js"></script> 
+</body>
+</html>
