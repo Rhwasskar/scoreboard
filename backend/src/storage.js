@@ -1,7 +1,7 @@
 const XLSX = require('xlsx');
 const fs = require('fs');
 
-const FILE_PATH = './fights.xlsx';
+const FILE_PATH = '../db/fights.xlsx';
 
 function saveFight(fightData) {
   let wb, ws;

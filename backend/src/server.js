@@ -1,17 +1,17 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
-const ScoreManager = require('./modules/scoreManager');
-const { saveFight } = require('./modules/storage');
+const ScoreManager = require('./scoreManager');
+const { saveFight } = require('./storage');
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
 const path = require('path');
-
-app.use(express.static(path.join(__dirname, 'public')));
-
+const publicDir = path.resolve(__dirname, '../../frontend/public');
+// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(publicDir));
 
 // Diccionario de áreas -> ScoreManager
 const areas = {};
