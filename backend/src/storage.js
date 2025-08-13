@@ -1,7 +1,7 @@
-const XLSX = require('xlsx');
-const fs = require('fs');
+const XLSX = require("xlsx");
+const fs = require("fs");
 
-const FILE_PATH = '../db/fights.xlsx';
+const FILE_PATH = "../db/fights.xlsx";
 
 function saveFight(fightData) {
   let wb, ws;
@@ -12,9 +12,20 @@ function saveFight(fightData) {
   } else {
     wb = XLSX.utils.book_new();
     ws = XLSX.utils.aoa_to_sheet([
-      ["Área","Rojo","Blanco","Puntos Rojo","Puntos Blanco","Faltas Rojo","Faltas Blanco","Ganador","Método","Duración (s)"]
+      [
+        "Área",
+        "Rojo",
+        "Blanco",
+        "Puntos Rojo",
+        "Puntos Blanco",
+        "Faltas Rojo",
+        "Faltas Blanco",
+        "Ganador",
+        "Método",
+        "Duración (s)",
+      ],
     ]);
-    XLSX.utils.book_append_sheet(wb, ws, 'Fights');
+    XLSX.utils.book_append_sheet(wb, ws, "Fights");
   }
 
   const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
@@ -28,7 +39,7 @@ function saveFight(fightData) {
     fightData.foulsWhite,
     fightData.winner,
     fightData.method,
-    fightData.duration
+    fightData.duration,
   ]);
 
   const newWS = XLSX.utils.aoa_to_sheet(data);

@@ -7,7 +7,7 @@ module.exports = function ScoreManager(areaId) {
     area: areaId,
     red: { name: "J. PEREZ", score: 0, fouls: 0 },
     white: { name: "M. LOPEZ", score: 0, fouls: 0 },
-    timer: timer
+    timer: timer,
   };
 
   function getState() {
@@ -19,7 +19,8 @@ module.exports = function ScoreManager(areaId) {
     state[corner].score = Math.max(0, state[corner].score + delta);
   }
 
-  function addFoul(corner, type = 'normal') {
+  function addFoul(corner, _type = "normal") {
+    //le puse _ a type para que Slint lo ignore por el momento
     history.push(getState());
     state[corner].fouls += 1;
   }
@@ -41,8 +42,12 @@ module.exports = function ScoreManager(areaId) {
     }
   }
 
-  function start() { running = true; }
-  function stop() { running = false; }
+  function start() {
+    running = true;
+  }
+  function stop() {
+    running = false;
+  }
 
   function reset() {
     history = [];
@@ -68,6 +73,6 @@ module.exports = function ScoreManager(areaId) {
     start,
     stop,
     reset,
-    setCompetitors
+    setCompetitors,
   };
 };

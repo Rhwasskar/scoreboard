@@ -27,6 +27,9 @@
     "prettier": "^3.6.2"
   },
   "lint-staged": {
-  "**/*.js": ["eslint --fix", "prettier -w"]
-}
+    "**/*.js": [
+      "eslint --fix",
+      "prettier -w"
+    ]
+  }
 }
